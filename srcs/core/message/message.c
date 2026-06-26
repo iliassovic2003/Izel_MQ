@@ -6,7 +6,7 @@ imq_message_t   *imq_msg_create(imq_msg_type_t type, const char *topic,
                                     const void *payload, uint32_t size) {
     imq_message_t*       message;
 
-    if (type == IMQ_CONTROL && size > IMQ_CONTROL_PAYLOAD_MAX)
+    if (type == IMQ_CONTROL && size > IMQ_CTRL_PAYLOAD_MAX)
         return NULL;
     if (type == IMQ_DATA && size > IMQ_DATA_PAYLOAD_MAX)
         return NULL;
@@ -15,6 +15,7 @@ imq_message_t   *imq_msg_create(imq_msg_type_t type, const char *topic,
     if (!message)
         return NULL;
 
+    atomic_thread_fence(memory_order_acquire);
     memset(message, 0, sizeof(imq_message_t) + size);
 
     message->id = atomic_fetch_add(&s_next_id, 1);

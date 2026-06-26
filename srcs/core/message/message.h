@@ -3,20 +3,15 @@
 
 # include   <stdint.h>
 # include   <stddef.h>
+# include   <string.h>
+# include   <stdio.h>
+# include   <time.h>
 # include   "../ialloc/lock_free_malloc.h"
-
-/*
-** Two message types
-*/
 
 typedef enum {
     IMQ_CONTROL  = 0,
     IMQ_DATA     = 1,
-}           imq_msg_type_t;
-
-/*
-** The core message struct
-*/
+}                   imq_msg_type_t;
 
 typedef struct {
     uint32_t        id;
@@ -27,11 +22,7 @@ typedef struct {
     uint8_t         payload[];
 }                   imq_message_t;
 
-/*
-** Max payload sizes
-*/
-
-# define IMQ_CONTROL_PAYLOAD_MAX    SMALL_BLOCK_SIZE - sizeof(imq_message_t)
+# define IMQ_CTRL_PAYLOAD_MAX    SMALL_BLOCK_SIZE - sizeof(imq_message_t)
 # define IMQ_DATA_PAYLOAD_MAX       BIG_BLOCK_SIZE - sizeof(imq_message_t)
 
 
